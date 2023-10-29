@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UnitSpawn : MonoBehaviour
 {
     [SerializeField] private List<Unit> _units;
-    [SerializeField] private List<GameObject> _waveUnits;
     [SerializeField] private Button _unitButton;
     [SerializeField] private Transform _zoneSpawn;
     private List<KeyCode> _codes = new() {KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3};
@@ -23,6 +22,7 @@ public class UnitSpawn : MonoBehaviour
         _panel = GetComponent<RectTransform>();
         for (int i = 0; i < PlayerPrefs.GetInt("Level")+2; i++)
         {
+            print(i);
             Button button = Instantiate(_unitButton, _panel);
             button.transform.GetChild(0).GetComponent<TMP_Text>().text = _units[i].name;
             button.transform.GetChild(1).GetComponent<TMP_Text>().text = (i+1).ToString();
@@ -34,7 +34,7 @@ public class UnitSpawn : MonoBehaviour
     {
         foreach (KeyCode keyCode in _codes)
         {
-            if(Input.GetKeyDown(keyCode))
+            if(Input.GetKeyDown(keyCode) && _codes.IndexOf(keyCode) < PlayerPrefs.GetInt("Level")+2)
                 Spawn(_codes.IndexOf(keyCode));
         }
         if (_spawn)
